@@ -58,7 +58,7 @@
   Each RFM12B needs to have the same group ID to talk to each other.
   Change this to whatever you want, (needs to be between 0 and 255).
 */
-#define RFM12B_DEFAULT_GROUP_ID   211
+#define RFM12B_DEFAULT_GROUP_ID   212
 
 /*
   The default frequency band to use for each RFM12B board. You can change
