@@ -1358,6 +1358,7 @@ rfm12_open(struct inode *inode, struct file *filp)
     unsigned long flags;
    int err = -ENXIO, has_irq = 0;
 
+   
    mutex_lock(&device_list_lock);
 
    list_for_each_entry(rfm12, &device_list, device_entry) {
@@ -1385,7 +1386,7 @@ rfm12_open(struct inode *inode, struct file *filp)
           goto pError;
       }
             
-      spin_lock_irqsave(&rfm12->lock, flags);
+      //spin_lock_irqsave(&rfm12->lock, flags);
    
       if (!rfm12->in_buf) {
           rfm12->in_buf = kmalloc(2*DATA_BUF_SIZE, GFP_KERNEL);
@@ -1431,7 +1432,7 @@ rfm12_open(struct inode *inode, struct file *filp)
       if (0 == err)
          rfm12_begin_sending_or_receiving(rfm12);
       
-      spin_unlock_irqrestore(&rfm12->lock, flags);
+      //spin_unlock_irqrestore(&rfm12->lock, flags);
       
       err = platform_irq_init(rfm12->irq_identifier, (void*)rfm12);
       has_irq = (0 == err);      
