@@ -17,16 +17,18 @@
 # along with rfm12b-linux.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-obj-m += rfm12b.o
+obj-m := rfm12b.o
 
-KVERSION := $(shell uname -r)
-
-# 3.7 moved version.h to a different location
-if [ -f /lib/modules/$(KVERSION)/build/include/generated/uapi/linux/version.h ]; then \
-	INCLUDE += -I/lib/modules/$(KVERSION)/build/include/generated/uapi/
+SRC       := $(shell pwd)
 
 all:
-	make -C /lib/modules/$(KVERSION)/build $(INCLUDE) M=$(PWD) modules
-clean:
-	make -C /lib/modules/$(KVERSION)/build $(INCLUDE) M=$(PWD) clean
+	$(MAKE) -C $(KERNEL_SRC) M=$(SRC)
 
+clean:
+	rm -rf *.o *~ core .depend .*.cmd *.ko *.mod.c .tmp_versions *.symvers .#* *.save *.bak Modules.* modules.order Module.markers *.bin
+
+programs:
+	cd examples; make clean; CC=/home/leon/sandbox/sidebranch/happyfeet/build/tmp/sysroots/x86_64-linux/usr/bin/armv5te-poky-linux-gnueabi/arm-poky-linux-gnueabi-gcc make && sudo cp bin/rfm12b_* /nfsroot/olinuxino/
+
+driver:
+	`find ../temp/run.do_compile* | head -n 1`; sudo cp rfm12b.ko /nfsroot/olinuxino/
